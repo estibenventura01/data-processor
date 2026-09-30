@@ -10,7 +10,7 @@ variable "authorized_keys" {
 }
 
 variable "root_pass" {
-	description	= "Set the root password for the instance"
+	description	= "The root password for the instance"
 	type		= string
 	sensitive	= true
 }
