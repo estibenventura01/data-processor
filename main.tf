@@ -14,7 +14,7 @@ provider "linode" {
 resource "linode_instance" "data-process" {
     label = "data-process_assignment"
     image = "linode/ubuntu22.04"
-    region = "var.region"
+    region = var.region
     type = "g6-standard-1"
     authorized_keys = [var.authorized_keys]
     root_pass = var.root_pass
