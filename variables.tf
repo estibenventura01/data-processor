@@ -1,16 +1,16 @@
 variable "token" {
-	description	= "Linode API token"
+	description	= "Your Linode API Token"
 	type 		= string
 	sensitive	= true
 }
 
 variable "authorized_keys" {
-	description	= "Public SSH key"
+	description	= "Your Public SSH key for the instance"
 	type		= string
 }
 
 variable "root_pass" {
-	description	= "Root password for the instance"
+	description	= "Set the root password for the instance"
 	type		= string
 	sensitive	= true
 }
