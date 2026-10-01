@@ -1,0 +1,56 @@
+- name: Create the application directory
+  ansible.builtin.file:
+    path: "{{ app_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Copy the application source to the host
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../app/"
+    dest: "{{ app_dir }}/app/"
+    mode: "0755"
+  notify: restart dataproc
+
+- name: Ensure the host log directory exists
+  ansible.builtin.file:
+    path: /var/log/nginx
+    state: directory
+    mode: "0755"
+
+- name: Pre-create the access log before any container mounts it
+  ansible.builtin.file:
+    path: /var/log/nginx/custom-access.log
+    state: touch
+    owner: root
+    group: root
+    mode: "0644"
+    modification_time: preserve  
+    access_time: preserve         
+
+- name: Template the compose file
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ app_dir }}/docker-compose.yml"
+    mode: "0644"
+  notify: restart dataproc
+
+- name: Template the nginx config
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: "{{ app_dir }}/nginx.conf"
+    mode: "0644"
+  notify: restart dataproc
+
+- name: Install the dataproc unit file
+  ansible.builtin.template:
+    src: dataproc.service.j2
+    dest: /etc/systemd/system/dataproc.service
+    mode: "0644"
+  notify: restart dataproc
+
+- name: Enable and start the stack
+  ansible.builtin.systemd_service:
+    name: dataproc
+    state: started
+    enabled: true
+    daemon_reload: true   
