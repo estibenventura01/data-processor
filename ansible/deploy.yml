@@ -3,7 +3,18 @@
   hosts: web
   become: true
 
+  vars:
+    app_dir:      /opt/dataproc
+    dataproc_uid: 2048 
+
   roles:
     - base
     - docker
     - app
+
+  handlers:
+    - name: restart dataproc
+      ansible.builtin.systemd_service:
+        name: dataproc
+        state: restarted
+        daemon_reload: true

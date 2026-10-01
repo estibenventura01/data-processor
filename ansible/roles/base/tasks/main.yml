@@ -1,0 +1,24 @@
+- name: Create the dataproc service account
+  ansible.builtin.user:
+    name: dataproc
+    uid: "{{ dataproc_uid }}"
+    shell: /usr/sbin/nologin   
+    create_home: true
+    state: present
+
+- name: Allow SSH
+  community.general.ufw:
+    rule: allow
+    name: OpenSSH
+
+- name: Allow application traffic on pport 8080
+  community.general.ufw:
+    rule: allow
+    port: "8080"
+    proto: tcp
+
+- name: Default-deny incoming and enable the firewall
+  community.general.ufw:
+    state: enabled
+    policy: deny
+    direction: incoming
