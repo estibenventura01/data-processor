@@ -19,9 +19,14 @@ Ansible installs Docker and the Compose v2 plugin.
 
         ansible-galaxy collection install community.general
 
-- An SSH keypair:
+- An SSH keypair, loaded into your SSH agent:
 
         ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_dataproc
+        ssh-add ~/.ssh/id_ed25519_dataproc
+
+  The `ssh-add` is not optional. SSH offers only default-named keys (`id_rsa`,
+  `id_ed25519`) on its own, so a key with a custom name is never tried unless the
+  agent is holding it.
 
 - `curl` — preinstalled on macOS and most Linux distributions
 - A Linode account and a Personal Access Token (see below)
@@ -100,6 +105,12 @@ is trusted automatically, while a host whose key has changed is still rejected.
 **4. Configure the host and start the stack**
 
     ansible-playbook -i ansible/inventory.ini ansible/deploy.yml
+
+If this fails with `Permission denied (publickey,password)`, the key is not in your
+agent. Either run `ssh-add ~/.ssh/id_ed25519_dataproc`, or point the playbook at the
+key directly:
+
+    ansible-playbook -i ansible/inventory.ini ansible/deploy.yml --private-key ~/.ssh/id_ed25519_dataproc
 
 **5. Confirm it works**
 
