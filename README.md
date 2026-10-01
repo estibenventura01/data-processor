@@ -5,7 +5,13 @@
 Everything runs from your own machine. Nothing is installed on the target host by hand —
 Ansible installs Docker and the Compose v2 plugin.
 
-- Terraform (>= 1.6) — `brew install terraform`, or HashiCorp's apt repository
+- Terraform (>= 1.6). On macOS:
+
+        brew tap hashicorp/tap
+        brew install hashicorp/tap/terraform
+
+  For Linux and other platforms, follow HashiCorp's instructions:
+  https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
 - Ansible — `brew install ansible`, or `pip3 install ansible`
 - The `community.general` Ansible collection, which provides the `ufw` module. It is
   already included if you installed the full `ansible` package; install it explicitly
