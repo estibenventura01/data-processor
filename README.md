@@ -56,8 +56,20 @@ Terraform prompts for every variable that has no default. There are three:
   from an image.
 - `token` — your Linode API token.
 
-Terraform echoes prompted input as you type it, including for variables marked
-`sensitive`, so run this somewhere your screen is not being shared.
+`token` and `root_pass` are declared `sensitive`, so Terraform hides what you type at
+those two prompts — nothing appears on screen, not even dots. That is expected: type or
+paste the value and press Enter even though the line looks empty. `authorized_keys` is
+not sensitive and will be visible as you paste it, which is fine — it is a public key.
+
+Two settings are not prompted for:
+
+- **Region** — declared in `terraform/variables.tf` with a default of `us-east`. To
+  deploy somewhere else, edit that variable's `default` before running `apply`. For a
+  one-off change without editing the file,
+  `terraform -chdir=terraform apply -var region=us-west` also works.
+- **Instance type** — set literally to `g6-standard-1` on the `linode_instance`
+  resource in `terraform/main.tf`. Edit it there to use a different plan. A 1GB Nanode
+  can struggle with the Docker build, so `g6-standard-1` or larger is recommended.
 
 On success, Terraform writes the instance's public IP into `ansible/inventory.ini`. You
 can also print it at any time:
