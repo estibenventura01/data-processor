@@ -7,9 +7,11 @@ Ansible installs Docker and the Compose v2 plugin.
 
 - Terraform (>= 1.6) — `brew install terraform`, or HashiCorp's apt repository
 - Ansible — `brew install ansible`, or `pip3 install ansible`
-- The `community.general` Ansible collection:
+- The `community.general` Ansible collection, which provides the `ufw` module. It is
+  already included if you installed the full `ansible` package; install it explicitly
+  if you have `ansible-core` only:
 
-        ansible-galaxy collection install -r ansible/requirements.yml
+        ansible-galaxy collection install community.general
 
 - An SSH keypair:
 
