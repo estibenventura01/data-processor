@@ -4,6 +4,10 @@ terraform {
       source = "linode/linode"
       version = "3.0.0"
     }
+    local = {
+      source  = "hashicorp/local"
+      version = "~> 2.5"
+    }
   }
 }
 
@@ -43,4 +47,13 @@ resource "linode_firewall" "data-process" {
   outbound_policy = "ACCEPT"
 
   linodes = [linode_instance.data-process.id]
+}
+
+resource "local_file" "ansible_inventory" {
+  filename        = "${path.module}/../ansible/inventory.ini"
+  file_permission = "0644"
+  content         = <<-EOT
+    [web]
+    ${linode_instance.data-process.ip_address} ansible_user=root
+  EOT
 }
