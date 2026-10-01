@@ -1,0 +1,12 @@
+[Unit]
+Description=Data Processor stack
+Requires=docker.service            
+After=docker.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/docker compose -f {{ app_dir }}/docker-compose.yml up --build
+ExecStop=/usr/bin/docker compose -f {{ app_dir }}/docker-compose.yml down
+
+[Install]
+WantedBy=multi-user.target
