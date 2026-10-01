@@ -1,0 +1,9 @@
+---
+- name: Deploy the Data Processor stack
+  hosts: web
+  become: true
+
+  roles:
+    - base
+    - docker
+    - app
