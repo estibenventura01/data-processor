@@ -1,0 +1,13 @@
+- name: Install Docker and the Compose v2 plugin
+  ansible.builtin.apt:
+    name:
+      - docker.io
+      - docker-compose-v2  
+    state: present
+    update_cache: true
+
+- name: Ensure the Docker daemon is running and enabled at boot
+  ansible.builtin.systemd_service:
+    name: docker
+    state: started
+    enabled: true
